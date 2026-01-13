@@ -1,19 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Habit(models.Model)
+class Habit(models.Model):
     FREQUENCY_CHOICES = [
         ('D', 'Diário'),
         ('W', 'Semanal'),
-]
+    ]
 
-user = models.ForeignKey(User, on_delete=models.CASCADE)
-name = models.CharField(max_length=100)
-frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)
-created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-def __str__(self):
-    return self.name
+    def __str__(self):
+        return self.name
+
 
 class HabitLog(models.Model):
-    habit = models.ForeignKey(Habit, on_delete=models.CASCADE)    
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE)
+    date = models.DateField()
+    completed = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('habit', 'date')
+
+    def __str__(self):
+        return f"{self.habit.name} - {self.date}"

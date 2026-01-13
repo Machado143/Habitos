@@ -1,0 +1,13 @@
+<h1>Novo Hábito</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="text" name="name" placeholder="Nome do hábito" required>
+
+  <select name="frequency">
+    <option value="D">Diário</option>
+    <option value="W">Semanal</option>
+  </select>
+
+  <button type="submit">Salvar</button>
+</form>

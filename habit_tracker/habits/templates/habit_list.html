@@ -1,0 +1,11 @@
+<h1>Meus Hábitos</h1>
+
+<a href="{% url 'habits:create' %}">Novo hábito</a>
+
+<ul>
+  {% for habit in habits %}
+    <li>{{ habit.name }} - {{ habit.get_frequency_display }}</li>
+  {% empty %}
+    <li>Nenhum hábito cadastrado</li>
+  {% endfor %}
+</ul>
