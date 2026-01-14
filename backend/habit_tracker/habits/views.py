@@ -6,6 +6,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework import parsers
+from .serializers import HabitSerializer
 import os
 from django.conf import settings
 from django.contrib.auth import login as auth_login
@@ -49,6 +53,42 @@ class LoginView(APIView):
         else:
             return Response({"detail": "Credenciais inválidas"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+@method_decorator(csrf_exempt, name='dispatch')
+class LogoutView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        from django.contrib.auth import logout
+        logout(request)
+        return Response({"detail": "Logout ok"}, status=status.HTTP_200_OK)
+
+
+class HabitListAPI(APIView):
+    """GET: lista hábitos do usuário autenticado; POST: cria novo hábito."""
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [parsers.JSONParser]
+
+    def get(self, request):
+        habits = Habit.objects.filter(user=request.user).order_by('-created_at')
+        serializer = HabitSerializer(habits, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        data = request.data.copy()
+        data['user'] = request.user.id
+        serializer = HabitSerializer(data=data)
+        if serializer.is_valid():
+            # criar com user vinculado
+            habit = Habit.objects.create(
+                user=request.user,
+                name=serializer.validated_data['name'],
+                frequency=serializer.validated_data['frequency']
+            )
+            return Response(HabitSerializer(habit).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def docs_list(request):
     """Lista arquivos estáticos em backend/docs/ para verificação rápida."""

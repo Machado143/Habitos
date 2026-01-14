@@ -2,21 +2,58 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <title>Hábitos</title>
-    <style>body{font-family:Arial,Helvetica,sans-serif;padding:20px}h1{color:#333}</style>
+    <title>Portal - Backend Hábitos</title>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;padding:24px;line-height:1.5}
+      h1{color:#333;margin-bottom:8px}
+      ul{padding-left:18px}
+      li{margin:6px 0}
+      .muted{color:#666;font-size:0.95em}
+      .actions{margin-top:18px}
+      form{display:inline}
+    </style>
   </head>
   <body>
-    <h1>Meus Hábitos</h1>
-    {% if habits %}
-      <ul>
-        {% for h in habits %}
-          <li>{{ h.name }} — {{ h.frequency }}</li>
-        {% endfor %}
-      </ul>
+    <h1>Portal do Backend — Hábitos</h1>
+    <p class="muted">Use esta página para navegar pelas APIs e recursos do backend.</p>
+
+    <h2>Conta</h2>
+    {% if request.user.is_authenticated %}
+      <p>Autenticado como <strong>{{ request.user.username }}</strong>.</p>
+      <div class="actions">
+        <form action="/api/logout/" method="post">
+          <button type="submit">Sair (logout)</button>
+        </form>
+        <a href="/admin/" style="margin-left:12px">Admin</a>
+      </div>
     {% else %}
-      <p>Você não tem hábitos cadastrados.</p>
+      <p>Você não está autenticado.</p>
+      <p><a href="http://localhost:5173/login">Ir para o login (frontend)</a></p>
     {% endif %}
 
-    <p><a href="/create/">Criar novo hábito</a> · <a href="/docs/">Ver documentos (backend)</a> · <a href="/login">Login (frontend)</a></p>
+    <h2>Documentação e APIs</h2>
+    <ul>
+      <li><a href="/api/schema/swagger-ui/">Swagger UI (Interactive)</a> — interface para testar a API</li>
+      <li><a href="/api/schema/">OpenAPI (JSON)</a> — schema OpenAPI</li>
+      <li><a href="/api/schema/redoc/">Redoc</a> — documentação alternativa</li>
+      <li><a href="/docs/">/docs/ (redirect para Swagger)</a></li>
+    </ul>
+
+    <h2>Endpoints principais</h2>
+    <ul>
+      <li><a href="/api/habits/">/api/habits/</a> — GET/POST (requer autenticação)</li>
+      <li>/api/login/ — POST (usuário/senha) <span class="muted">(use frontend)</span></li>
+      <li>/api/logout/ — POST (fazer logout)</li>
+      <li><a href="/create/">/create/</a> — Criar hábito (página server-rendered)</li>
+      <li><a href="/admin/">/admin/</a> — Painel administrativo</li>
+    </ul>
+
+    <h2>Front-end</h2>
+    <ul>
+      <li><a href="http://localhost:5173/">App React (desenvolvimento)</a></li>
+    </ul>
+
+    <hr>
+    <p class="muted">Observação: as APIs autenticadas usam sessão do Django (cookie <code>sessionid</code>). Para testar interativamente, use a Swagger UI ou o frontend em desenvolvimento (proxy configurado).</p>
   </body>
 </html>

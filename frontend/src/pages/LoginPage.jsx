@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import AuthContext from '../contexts/AuthContext'
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -7,6 +8,8 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation()
+  const { login } = useContext(AuthContext)
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,8 +34,11 @@ function LoginPage() {
 
       const data = await res.json();
       console.log("Login ok:", data);
-      // Redireciona para dashboard após login bem-sucedido
-      navigate("/");
+      // atualizar contexto de autenticação
+      login({ username: data.username || username })
+      // redirecionar para origem ou página inicial
+      const from = location.state?.from?.pathname || '/'
+      navigate(from, { replace: true })
     } catch (err) {
       setError("Erro de rede: " + err.message);
     } finally {
