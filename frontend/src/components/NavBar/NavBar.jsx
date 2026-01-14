@@ -1,80 +1,132 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+/**
+ * NavBar Component
+ * 
+ * Barra de navegação principal com logo, menu e ações
+ * 
+ * Props:
+ * - user: { name: string, avatar?: string }
+ * - onLogout: function
+ * - showMobileMenu: boolean
+ * - onToggleMobileMenu: function
+ */
+
+import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 
-const NavBar = ({ user, onLogout }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+export const NavBar = ({ 
+  user,
+  onLogout,
+  showMobileMenu = false,
+  onToggleMobileMenu,
+  className = '',
+  ...props
+}) => {
+  const classNames = ['navbar', className].filter(Boolean).join(' ');
 
-  const handleLogout = () => {
-    if (onLogout) onLogout();
-    navigate('/login');
-  };
+  const [dark, setDark] = useState(() => {
+    try {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (e) {
+      return false;
+    }
+  });
 
-  const isActive = (path) => location.pathname === path;
+  useEffect(() => {
+    try {
+      const root = document.documentElement;
+      if (dark) root.classList.add('dark-mode');
+      else root.classList.remove('dark-mode');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    } catch (e) {}
+  }, [dark]);
 
-  const navLinks = [
-    { path: '/', label: 'Início', icon: '🏠' },
-    { path: '/habits', label: 'Hábitos', icon: '📋' },
-    { path: '/create', label: 'Novo', icon: '➕' }
-  ];
+  const toggleTheme = () => setDark((s) => !s);
 
   return (
-    <nav className="navbar">
+    <nav className={classNames} {...props}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          <div className="navbar-logo-icon">H</div>
-          <span className="navbar-logo-text">Habitcs</span>
-        </Link>
-
-        <div className={`navbar-links ${mobileMenuOpen ? 'navbar-links-mobile' : ''}`}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`navbar-link ${isActive(link.path) ? 'navbar-link-active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="navbar-link-icon">{link.icon}</span>
-              <span className="navbar-link-text">{link.label}</span>
-            </Link>
-          ))}
+        {/* Logo */}
+        <div className="navbar-brand">
+          <button 
+            className="navbar-menu-toggle"
+            onClick={onToggleMobileMenu}
+            aria-label="Abrir menu"
+            aria-expanded={showMobileMenu}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+          
+          <a href="/" className="navbar-logo">
+            <span className="navbar-logo-icon">✓</span>
+            <span className="navbar-logo-text">Hábitos</span>
+          </a>
         </div>
 
-        <div className="navbar-actions">
-          {user ? (
-            <>
-              <div className="navbar-user">
-                <div className="navbar-user-avatar">
-                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+        {/* Desktop Navigation */}
+        <div className="navbar-nav">
+          <a href="/dashboard" className="navbar-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21C9.55228 21 10 20.5523 10 20V16C10 15.4477 10.4477 15 11 15H13C13.5523 15 14 15.4477 14 16V20C14 20.5523 14.4477 21 15 21M9 21H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            Dashboard
+          </a>
+          
+          <a href="/habits" className="navbar-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 11V17M15 7V17M3 21H21M3 3L3 21M3 3H21M21 3V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            Meus Hábitos
+          </a>
+          
+          <a href="/reports" className="navbar-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M13 7H21M21 7V15M21 7L13 15L9 11L3 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            Relatórios
+          </a>
+        </div>
+
+        {/* User Menu */}
+        {user && (
+          <div className="navbar-actions">
+            <div className="navbar-user">
+              {user.avatar ? (
+                <img src={user.avatar} alt={user.name} className="navbar-avatar" />
+              ) : (
+                <div className="navbar-avatar-placeholder">
+                  {typeof user.name === 'string' && user.name.length > 0
+                    ? user.name.charAt(0).toUpperCase()
+                    : '?'}
                 </div>
-                <span className="navbar-user-name">{user.name || 'Usuário'}</span>
-              </div>
-              <button onClick={handleLogout} className="navbar-logout" title="Sair">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-              </button>
-            </>
-          ) : (
-            <Link to="/login" className="navbar-login-btn">
-              Entrar
-            </Link>
-          )}
-        </div>
+              )}
+              <span className="navbar-username">{user.name || 'Usuário'}</span>
+            </div>
 
-        <button 
-          className="navbar-mobile-toggle"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label="Alternar tema"
+              title={dark ? 'Tema escuro' : 'Tema claro'}
+            >
+              {dark ? '🌙' : '☀️'}
+            </button>
+
+            <button 
+              className="navbar-logout"
+              onClick={onLogout}
+              aria-label="Sair"
+              title="Sair"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M17 16L21 12M21 12L17 8M21 12H9M9 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

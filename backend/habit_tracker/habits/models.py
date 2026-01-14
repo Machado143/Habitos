@@ -9,7 +9,9 @@ class Habit(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)  # Descrição opcional
     frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)
+    completed = models.BooleanField(default=False)  # Status de conclusão
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,133 +1,109 @@
-import { useState, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+/**
+ * LoginPage - Página completa de login
+ * 
+ * Componente com estado completo para autenticação
+ */
+
+import React, { useState, useContext } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
-import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
+import Button from '../components/Button/Button';
 import './LoginPage.css';
 
-function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  
+export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
-    // Validação básica
-    if (!username.trim() || !password.trim()) {
-      setError("Por favor, preencha todos os campos");
-      setLoading(false);
-      return;
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!username.trim()) {
+      newErrors.username = 'Usuário é obrigatório';
     }
 
+    if (!password) {
+      newErrors.password = 'Senha é obrigatória';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
+
+    if (!validateForm()) return;
+
+    setLoading(true);
+
     try {
-      // Garantir que o cookie CSRF esteja presente (fetch para endpoint que define o cookie)
-      await fetch('/api/csrf/', { method: 'GET', credentials: 'include' });
+      const result = await login(username, password);
 
-      // Ler o cookie csrftoken e enviá-lo no header X-CSRFToken (necessário para Django CSRF)
-      function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
+      if (result.success) {
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+        }
+        const from = location.state?.from?.pathname || "/habits";
+        navigate(from, { replace: true });
+      } else {
+        setErrors({ form: result.error || 'Credenciais inválidas' });
       }
-
-      const csrftoken = getCookie('csrftoken');
-
-      const res = await fetch("/api/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(csrftoken ? { 'X-CSRFToken': csrftoken } : {}),
-        },
-        body: JSON.stringify({ username, password }),
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.detail || "Credenciais inválidas");
-        return;
-      }
-
-      const data = await res.json();
-      
-      // Atualizar contexto de autenticação
-      login({ 
-        username: data.username || username,
-        name: data.name || username 
-      });
-      
-      // Redirecionar para origem ou página inicial
-      const from = location.state?.from?.pathname || '/habits';
-      navigate(from, { replace: true });
-    } catch (err) {
-      setError("Erro de conexão. Tente novamente.");
-      console.error("Login error:", err);
+    } catch (error) {
+      setErrors({ form: 'Erro de conexão. Tente novamente.' });
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
           <div className="login-logo">
-            <div className="login-logo-icon">H</div>
-            <h1 className="login-logo-text">Habitcs</h1>
+            <div className="login-logo-icon">✓</div>
+            <span className="login-logo-text">Hábitos</span>
           </div>
-          <h2 className="login-title">Bem-vindo de volta</h2>
-          <p className="login-subtitle">
-            Entre para acompanhar seus hábitos e alcançar suas metas
-          </p>
+          <h1 className="login-title">Bem-vindo de volta!</h1>
+          <p className="login-subtitle">Entre para acompanhar seus hábitos</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          {error && (
-            <div className="login-error">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-              {error}
-            </div>
-          )}
-
+        <form className="login-form" onSubmit={handleSubmit}>
           <Input
-            label="Usuário ou Email"
+            id="username"
+            name="username"
             type="text"
+            label="Usuário"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Digite seu usuário"
-            autoComplete="username"
+            error={errors.username}
+            placeholder="Seu usuário"
             required
-            fullWidth
             disabled={loading}
           />
 
           <Input
-            label="Senha"
+            id="password"
+            name="password"
             type="password"
+            label="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Digite sua senha"
-            autoComplete="current-password"
+            error={errors.password}
+            placeholder="••••••••"
             required
-            fullWidth
             disabled={loading}
           />
 
-          <div className="login-options">
+          <div className="login-actions">
             <label className="login-checkbox">
               <input
                 type="checkbox"
@@ -137,40 +113,38 @@ function LoginPage() {
               />
               <span>Lembrar de mim</span>
             </label>
-            <a href="#" className="login-forgot">
+
+            <a href="/forgot-password" className="login-link">
               Esqueceu a senha?
             </a>
           </div>
+
+          {errors.form && (
+            <div className="login-error" role="alert">
+              {errors.form}
+            </div>
+          )}
 
           <Button
             type="submit"
             variant="primary"
             size="lg"
+            fullWidth
             loading={loading}
             disabled={loading}
-            fullWidth
           >
             Entrar
           </Button>
-
-          <div className="login-divider">
-            <span>ou</span>
-          </div>
-
-          <p className="login-register">
-            Não tem uma conta?{' '}
-            <a href="/register" className="login-register-link">
-              Criar conta
-            </a>
-          </p>
         </form>
-      </div>
 
-      <div className="login-footer">
-        <p>© 2026 Habitcs. Todos os direitos reservados.</p>
+        <div className="login-footer">
+          Não tem uma conta?{' '}
+          <a href="/register" className="login-link">
+            Criar conta
+          </a>
+        </div>
       </div>
     </div>
   );
-}
-
-export default LoginPage;
+};
+// Single default export already declared at function definition above

@@ -3,57 +3,215 @@
   <head>
     <meta charset="utf-8" />
     <title>Portal - Backend Hábitos</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
-      body{font-family:Arial,Helvetica,sans-serif;padding:24px;line-height:1.5}
-      h1{color:#333;margin-bottom:8px}
-      ul{padding-left:18px}
-      li{margin:6px 0}
-      .muted{color:#666;font-size:0.95em}
-      .actions{margin-top:18px}
-      form{display:inline}
+      :root{
+        --bg-1:#340b4a; /* deep purple */
+        --bg-2:#7b2cbf; /* purple */
+        --accent:#ff6bcb; /* pink */
+        --card:#ffffff11;
+        --glass: rgba(255,255,255,0.06);
+        --text:#efe7f7;
+      }
+
+      html,body{height:100%}
+      body{
+        margin:0;font-family:Inter,ui-sans-serif,system-ui,Arial,Helvetica,sans-serif;
+        background: radial-gradient(1200px 600px at 10% 20%, #5a0f6f55 0%, transparent 20%),
+                    radial-gradient(900px 450px at 90% 80%, #ff6bcb22 0%, transparent 20%),
+                    linear-gradient(180deg,var(--bg-1),var(--bg-2));
+        color:var(--text);
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+      }
+
+      /* decorative mandala svg behind content */
+      .mandala-bg{
+        position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.18;
+        display:flex;align-items:center;justify-content:center;overflow:hidden
+      }
+
+      .container{
+        position:relative;z-index:1;max-width:1100px;margin:40px auto;padding:36px;
+        backdrop-filter: blur(6px) saturate(120%);
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+        border-radius:20px;border:1px solid rgba(255,255,255,0.06);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+      }
+
+      header.portal-header{display:flex;align-items:center;gap:20px}
+      .logo{width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:var(--bg-1);background:linear-gradient(135deg,var(--accent),#9b5de5);box-shadow:0 6px 18px rgba(0,0,0,0.35)}
+      h1{margin:0;font-size:28px}
+      p.lead{margin:6px 0 20px;color:rgba(255,255,255,0.85)}
+
+      .grid{display:grid;grid-template-columns:1fr 360px;gap:28px}
+
+      /* left: links */
+      .links{display:grid;gap:12px}
+      .card-link{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;background:var(--card);border:1px solid rgba(255,255,255,0.04);text-decoration:none;color:var(--text);transition:transform .18s ease,box-shadow .18s}
+      .card-link:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+      .card-link .k{font-size:18px}
+      .muted{color:rgba(255,255,255,0.72);font-size:0.95rem}
+
+      .account{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+      .btn{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#ffffff11,#ffffff06);color:var(--text);text-decoration:none;cursor:pointer}
+      .btn.ghost{background:transparent;border:1px dashed rgba(255,255,255,0.06)}
+
+      /* right: sidebar */
+      aside.sidebar{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+      aside h3{margin-top:0}
+      ul.clean{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+
+      footer{margin-top:18px;color:rgba(255,255,255,0.65);font-size:0.9rem}
+
+      @media (max-width:900px){.grid{grid-template-columns:1fr}.container{margin:20px;padding:20px}}
+
+      /* small helper */
+      code{background:rgba(255,255,255,0.03);padding:2px 6px;border-radius:6px}
     </style>
   </head>
   <body>
-    <h1>Portal do Backend — Hábitos</h1>
-    <p class="muted">Use esta página para navegar pelas APIs e recursos do backend.</p>
+    <!-- Mandala SVG (decorativo) -->
+    <div class="mandala-bg" aria-hidden="true">
+      <svg width="1400" height="1400" viewBox="0 0 1400 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g1" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#ff6bcb" stop-opacity="1" />
+            <stop offset="60%" stop-color="#7b2cbf" stop-opacity="0.6" />
+            <stop offset="100%" stop-color="#340b4a" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="700" cy="700" r="560" fill="url(#g1)" />
+        <g opacity="0.6" transform="translate(700 700)">
+          <g stroke="#fff" stroke-opacity="0.06" stroke-width="6" fill="none">
+            <!-- concentric decorative rings -->
+            <circle r="420" />
+            <circle r="320" />
+            <circle r="220" />
+            <circle r="120" />
+          </g>
+        </g>
+      </svg>
+    </div>
 
-    <h2>Conta</h2>
-    {% if request.user.is_authenticated %}
-      <p>Autenticado como <strong>{{ request.user.username }}</strong>.</p>
-      <div class="actions">
-        <form action="/api/logout/" method="post">
-          <button type="submit">Sair (logout)</button>
-        </form>
-        <a href="/admin/" style="margin-left:12px">Admin</a>
+    <main class="container" role="main">
+      <header class="portal-header">
+        <div class="logo">H</div>
+        <div>
+          <h1>Portal do Backend — Hábitos</h1>
+          <p class="lead">Navegue rapidamente pelas APIs, docs e páginas administrativas.</p>
+        </div>
+      </header>
+
+      <div class="grid">
+        <section>
+          <div class="links">
+            {% if request.user.is_authenticated %}
+              <div class="muted">Autenticado como <strong>{{ request.user.username }}</strong></div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <form action="{% url 'habits:accounts-logout' %}" method="post" style="margin:0">
+                  {% csrf_token %}
+                  <button class="btn" type="submit">Sair (logout)</button>
+                </form>
+                <a class="btn ghost" href="/admin/">Painel Admin</a>
+              </div>
+            {% else %}
+              <div class="muted">Você não está autenticado.</div>
+              <a class="btn" href="http://localhost:5173/login">Ir para o login (frontend)</a>
+            {% endif %}
+
+            <a class="card-link" href="/api/schema/swagger-ui/">
+              <div class="k">🧭</div>
+              <div>
+                <div><strong>Swagger UI</strong></div>
+                <div class="muted">Interface interativa para testar a API</div>
+              </div>
+            </a>
+
+            <a class="card-link" href="/api/schema/">
+              <div class="k">📄</div>
+              <div>
+                <div><strong>OpenAPI (JSON)</strong></div>
+                <div class="muted">Schema da API</div>
+              </div>
+            </a>
+
+            <a class="card-link" href="/api/schema/redoc/">
+              <div class="k">📚</div>
+              <div>
+                <div><strong>Redoc</strong></div>
+                <div class="muted">Documentação alternativa</div>
+              </div>
+            </a>
+
+            <a class="card-link" href="/docs/">
+              <div class="k">🔗</div>
+              <div>
+                <div><strong>/docs/</strong></div>
+                <div class="muted">Redirect para Swagger</div>
+              </div>
+            </a>
+
+            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
+
+            <a class="card-link" href="/api/habits/">
+              <div class="k">✅</div>
+              <div>
+                <div><strong>/api/habits/</strong></div>
+                <div class="muted">GET/POST (requer autenticação)</div>
+              </div>
+            </a>
+
+            <div class="card-link" style="cursor:default">
+              <div class="k">🔐</div>
+              <div>
+                <div><strong>/api/login/</strong> — POST</div>
+                <div class="muted">Use o frontend para autenticar (envia usuário/senha)</div>
+              </div>
+            </div>
+
+            <div class="card-link" style="cursor:default">
+              <div class="k">🚪</div>
+              <div>
+                <div><strong>/api/logout/</strong> — POST</div>
+                <div class="muted">Faz logout da sessão atual</div>
+              </div>
+            </div>
+
+            <a class="card-link" href="/create/">
+              <div class="k">✍️</div>
+              <div>
+                <div><strong>/create/</strong></div>
+                <div class="muted">Criar hábito (página server-rendered)</div>
+              </div>
+            </a>
+
+            <a class="card-link" href="/admin/">
+              <div class="k">🛠️</div>
+              <div>
+                <div><strong>/admin/</strong></div>
+                <div class="muted">Painel administrativo</div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <h3>Front-end</h3>
+          <ul class="clean">
+            <li><a class="card-link" href="http://localhost:5173/">App React (desenvolvimento)</a></li>
+          </ul>
+
+          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0">
+
+          <h3>Observações</h3>
+          <p class="muted">As APIs autenticadas usam sessão do Django (cookie <code>sessionid</code>). Para testar interativamente, use o Swagger UI ou o frontend em desenvolvimento.</p>
+        </aside>
       </div>
-    {% else %}
-      <p>Você não está autenticado.</p>
-      <p><a href="http://localhost:5173/login">Ir para o login (frontend)</a></p>
-    {% endif %}
 
-    <h2>Documentação e APIs</h2>
-    <ul>
-      <li><a href="/api/schema/swagger-ui/">Swagger UI (Interactive)</a> — interface para testar a API</li>
-      <li><a href="/api/schema/">OpenAPI (JSON)</a> — schema OpenAPI</li>
-      <li><a href="/api/schema/redoc/">Redoc</a> — documentação alternativa</li>
-      <li><a href="/docs/">/docs/ (redirect para Swagger)</a></li>
-    </ul>
-
-    <h2>Endpoints principais</h2>
-    <ul>
-      <li><a href="/api/habits/">/api/habits/</a> — GET/POST (requer autenticação)</li>
-      <li>/api/login/ — POST (usuário/senha) <span class="muted">(use frontend)</span></li>
-      <li>/api/logout/ — POST (fazer logout)</li>
-      <li><a href="/create/">/create/</a> — Criar hábito (página server-rendered)</li>
-      <li><a href="/admin/">/admin/</a> — Painel administrativo</li>
-    </ul>
-
-    <h2>Front-end</h2>
-    <ul>
-      <li><a href="http://localhost:5173/">App React (desenvolvimento)</a></li>
-    </ul>
-
-    <hr>
-    <p class="muted">Observação: as APIs autenticadas usam sessão do Django (cookie <code>sessionid</code>). Para testar interativamente, use a Swagger UI ou o frontend em desenvolvimento (proxy configurado).</p>
+      <footer>
+        <div class="muted">Versão dev — DEBUG = True</div>
+      </footer>
+    </main>
   </body>
 </html>

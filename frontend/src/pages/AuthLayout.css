@@ -1,4 +1,14 @@
-/* Shared auth-style layout used by login and simple pages */
+/**
+ * AuthLayout Styles
+ * 
+ * Layout compartilhado para páginas de autenticação e páginas simples
+ * (Login, CreateHabit, HomePage, NeedLogin, NotFound, ErrorPage)
+ */
+
+/* =============================================================================
+   1. LAYOUT DA PÁGINA
+   ============================================================================= */
+
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -9,37 +19,53 @@
   background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
 }
 
+/* =============================================================================
+   2. CONTAINER PRINCIPAL
+   ============================================================================= */
+
 .auth-container {
   width: 100%;
   max-width: 640px;
-  background: var(--bg-primary);
-  border-radius: var(--radius-2xl);
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   padding: var(--spacing-8);
 }
 
+/* =============================================================================
+   3. HEADER
+   ============================================================================= */
+
 .auth-header {
   text-align: center;
   margin-bottom: var(--spacing-6);
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .auth-title {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-2);
+  margin: 0 0 var(--spacing-2) 0;
 }
 
 .auth-subtitle {
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-4);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-4) 0;
 }
+
+/* =============================================================================
+   4. FORMULÁRIO
+   ============================================================================= */
 
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
 }
+
+/* =============================================================================
+   5. AÇÕES E NOTAS
+   ============================================================================= */
 
 .auth-actions {
   display: flex;
@@ -50,12 +76,77 @@
 
 .auth-note {
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   margin-top: var(--spacing-4);
+  font-size: var(--font-size-sm);
 }
+
+.auth-note a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.auth-note a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* =============================================================================
+   6. NAVEGAÇÃO (LINKS)
+   ============================================================================= */
+
+.auth-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  margin: var(--spacing-3) 0;
+}
+
+.auth-nav-links a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast);
+}
+
+.auth-nav-links a:hover {
+  text-decoration: underline;
+}
+
+.auth-nav-links span {
+  color: var(--color-text-tertiary);
+}
+
+/* =============================================================================
+   7. MENSAGENS DE ERRO
+   ============================================================================= */
+
+.auth-error {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  padding: var(--spacing-2);
+  background: var(--color-error-light);
+  border-radius: var(--radius-base);
+  text-align: center;
+}
+
+/* =============================================================================
+   8. RESPONSIVO
+   ============================================================================= */
 
 @media (max-width: 640px) {
   .auth-container {
     padding: var(--spacing-6);
+  }
+
+  .auth-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .auth-actions {
+    flex-direction: column;
   }
 }

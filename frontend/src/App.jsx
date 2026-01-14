@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { ToastProvider } from './contexts/ToastContext'
 import RequireAuth from './components/RequireAuth'
 
 import LoginPage from './pages/LoginPage'
@@ -14,20 +15,22 @@ import './App.css'
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/need-login" element={<NeedLogin />} />
-          <Route path="/error" element={<ErrorPage />} />
+      <ToastProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/need-login" element={<NeedLogin />} />
+            <Route path="/error" element={<ErrorPage />} />
 
-          <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
 
-          <Route path="/habits" element={<RequireAuth><HabitsPage /></RequireAuth>} />
-          <Route path="/create" element={<RequireAuth><CreateHabit /></RequireAuth>} />
+            <Route path="/habits" element={<RequireAuth><HabitsPage /></RequireAuth>} />
+            <Route path="/create" element={<RequireAuth><CreateHabit /></RequireAuth>} />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </ToastProvider>
     </AuthProvider>
   )
 }
