@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hábitos</title>
+    <style>body{font-family:Arial,Helvetica,sans-serif;padding:20px}h1{color:#333}</style>
+  </head>
+  <body>
+    <h1>Meus Hábitos</h1>
+    {% if habits %}
+      <ul>
+        {% for h in habits %}
+          <li>{{ h.name }} — {{ h.frequency }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Você não tem hábitos cadastrados.</p>
+    {% endif %}
+
+    <p><a href="/create/">Criar novo hábito</a> · <a href="/docs/">Ver documentos (backend)</a> · <a href="/login">Login (frontend)</a></p>
+  </body>
+</html>

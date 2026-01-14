@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Criar Hábito</title>
+    <style>body{font-family:Arial,Helvetica,sans-serif;padding:20px}label{display:block;margin:8px 0}</style>
+  </head>
+  <body>
+    <h1>Criar Hábito</h1>
+    <form method="post">
+      {% csrf_token %}
+      <label>Nome: <input type="text" name="name" required></label>
+      <label>Frequência: <input type="text" name="frequency" required></label>
+      <button type="submit">Salvar</button>
+    </form>
+    <p><a href="/">Voltar</a></p>
+  </body>
+</html>
