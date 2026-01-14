@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Input from '../components/Input/Input'
+import Button from '../components/Button/Button'
+import './AuthLayout.css'
 
 export default function CreateHabit(){
   const [name, setName] = useState('')
@@ -30,18 +33,27 @@ export default function CreateHabit(){
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Criar Hábito</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome: <input value={name} onChange={e=>setName(e.target.value)} required/></label>
-        </div>
-        <div>
-          <label>Frequência: <input value={frequency} onChange={e=>setFrequency(e.target.value)} required/></label>
-        </div>
-        {error && <p style={{color:'red'}}>{error}</p>}
-        <button type="submit">Salvar</button>
-      </form>
+    <div className="auth-page">
+      <div className="auth-container">
+        <header className="auth-header">
+          <h1 className="auth-title">Criar Hábito</h1>
+          <p className="auth-subtitle">Adicione um novo hábito para acompanhar</p>
+        </header>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <Input label="Nome do hábito" value={name} onChange={e=>setName(e.target.value)} placeholder="Ex: Ler 20 páginas" required fullWidth />
+          <Input label="Frequência" value={frequency} onChange={e=>setFrequency(e.target.value)} placeholder="Ex: Diário, Semanal" required fullWidth />
+
+          {error && <div style={{color:'var(--color-error)',fontSize:'0.9rem'}}>{error}</div>}
+
+          <div className="auth-actions">
+            <Button variant="ghost" onClick={()=>navigate('/habits')}>Cancelar</Button>
+            <Button type="submit" variant="primary" loading={loading}>Salvar</Button>
+          </div>
+        </form>
+
+        <p className="auth-note">Você pode editar seus hábitos a qualquer momento na página de hábitos.</p>
+      </div>
     </div>
   )
 }

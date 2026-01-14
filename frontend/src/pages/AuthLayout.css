@@ -1,0 +1,61 @@
+/* Shared auth-style layout used by login and simple pages */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-6);
+  background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-8);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--spacing-6);
+  color: var(--text-primary);
+}
+
+.auth-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-2);
+}
+
+.auth-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-4);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.auth-actions {
+  display: flex;
+  gap: var(--spacing-3);
+  justify-content: flex-end;
+  margin-top: var(--spacing-2);
+}
+
+.auth-note {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: var(--spacing-4);
+}
+
+@media (max-width: 640px) {
+  .auth-container {
+    padding: var(--spacing-6);
+  }
+}

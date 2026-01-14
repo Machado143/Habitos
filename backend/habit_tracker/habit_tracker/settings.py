@@ -25,7 +25,17 @@ SECRET_KEY = 'django-insecure-5n679=+$nyo@*gc6h3@$bb%89y_gzjat*+_sb1u)th#add5&o^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
+
+# Trusted origins for CSRF when using a separate frontend dev server (Vite)
+# Add the frontend origin(s) used during development
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
 
 
 # Application definition

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paleta Monocromática - Hábitos</title>
+  <link rel="stylesheet" href="../tokens/variables.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family-body);
+      background: var(--color-bg-secondary);
+      padding: var(--spacing-8);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: var(--spacing-2);
+      background: linear-gradient(135deg, #000000, #616161);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .section {
+      background: white;
+      padding: var(--spacing-6);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-6);
+      box-shadow: var(--shadow-base);
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-4);
+      padding-bottom: var(--spacing-2);
+      border-bottom: 2px solid var(--color-border-primary);
+    }
+
+    /* Color Swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+
+    .color-swatch {
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border-primary);
+    }
+
+    .color-block {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .color-swatch:hover .color-block {
+      transform: scale(1.05);
+    }
+
+    .color-info {
+      padding: var(--spacing-3);
+      background: var(--color-bg-tertiary);
+    }
+
+    .color-name {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .color-value {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* Buttons */
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-base);
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-accent-hover);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text-primary);
+      border: 2px solid var(--color-border-secondary);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--color-text-primary);
+      background: var(--color-bg-tertiary);
+    }
+
+    .btn-error {
+      background: var(--color-error);
+      color: white;
+    }
+
+    .btn-error:hover {
+      background: var(--color-error-hover);
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-5);
+      border: 1px solid var(--color-border-primary);
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--color-border-secondary);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .card-description {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-3);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin-top: var(--spacing-4);
+    }
+
+    .progress-item {
+      margin-bottom: var(--spacing-4);
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-2);
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--color-bg-tertiary);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #000000, #424242);
+      border-radius: var(--radius-full);
+      transition: width 0.3s;
+    }
+
+    /* Typography */
+    .typography-sample h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-2);
+      background: none;
+      -webkit-text-fill-color: var(--color-text-primary);
+    }
+
+    .typography-sample h2 {
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .typography-sample h3 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .typography-sample p {
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .typography-sample small {
+      font-size: 14px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: var(--spacing-2);
+    }
+
+    .badge-default {
+      background: var(--color-neutral-800);
+      color: white;
+    }
+
+    .badge-light {
+      background: var(--color-neutral-200);
+      color: var(--color-neutral-800);
+    }
+
+    .badge-outline {
+      background: transparent;
+      border: 1px solid var(--color-neutral-400);
+      color: var(--color-neutral-700);
+    }
+
+    /* Inputs */
+    .input-group {
+      margin-top: var(--spacing-4);
+    }
+
+    .input-label {
+      display: block;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-2);
+      font-size: 14px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--color-border-primary);
+      border-radius: var(--radius-base);
+      font-size: 14px;
+      transition: all 0.2s;
+      background: white;
+      color: var(--color-text-primary);
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Gradient Examples */
+    .gradient-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+
+    .gradient-box {
+      height: 120px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      box-shadow: var(--shadow-base);
+    }
+
+    .gradient-1 {
+      background: linear-gradient(135deg, #000000, #424242);
+    }
+
+    .gradient-2 {
+      background: linear-gradient(135deg, #000000, #616161);
+    }
+
+    .gradient-3 {
+      background: linear-gradient(135deg, #212121, #9E9E9E);
+    }
+
+    .gradient-4 {
+      background: linear-gradient(90deg, #000000, #424242);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Paleta Monocromática</h1>
+    <p class="subtitle">Sistema de design elegante baseado em cinza, branco e preto</p>
+
+    <!-- Cores Primárias -->
+    <div class="section">
+      <h2 class="section-title">Cores Primárias - Preto e Cinza Escuro</h2>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-block" style="background: #1A1A1A; color: white;">Primary</div>
+          <div class="color-info">
+            <div class="color-name">Primary</div>
+            <div class="color-value">#1A1A1A</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #000000; color: white;">Hover</div>
+          <div class="color-info">
+            <div class="color-name">Primary Hover</div>
+            <div class="color-value">#000000</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #0A0A0A; color: white;">Active</div>
+          <div class="color-info">
+            <div class="color-name">Primary Active</div>
+            <div class="color-value">#0A0A0A</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #BDBDBD; color: #000;">Disabled</div>
+          <div class="color-info">
+            <div class="color-name">Primary Disabled</div>
+            <div class="color-value">#BDBDBD</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #F5F5F5; color: #000;">Light</div>
+          <div class="color-info">
+            <div class="color-name">Primary Light</div>
+            <div class="color-value">#F5F5F5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cores Accent -->
+    <div class="section">
+      <h2 class="section-title">Cores Accent - Cinza Médio</h2>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-block" style="background: #616161; color: white;">Accent</div>
+          <div class="color-info">
+            <div class="color-name">Accent</div>
+            <div class="color-value">#616161</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #424242; color: white;">Hover</div>
+          <div class="color-info">
+            <div class="color-name">Accent Hover</div>
+            <div class="color-value">#424242</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #212121; color: white;">Active</div>
+          <div class="color-info">
+            <div class="color-name">Accent Active</div>
+            <div class="color-value">#212121</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Escala Neutra -->
+    <div class="section">
+      <h2 class="section-title">Escala Neutra Completa</h2>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-block" style="background: #000000; color: white;">900</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 900</div>
+            <div class="color-value">#000000</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #212121; color: white;">800</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 800</div>
+            <div class="color-value">#212121</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #424242; color: white;">700</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 700</div>
+            <div class="color-value">#424242</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #616161; color: white;">600</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 600</div>
+            <div class="color-value">#616161</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #757575; color: white;">500</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 500</div>
+            <div class="color-value">#757575</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #9E9E9E; color: white;">400</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 400</div>
+            <div class="color-value">#9E9E9E</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #BDBDBD; color: #000;">300</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 300</div>
+            <div class="color-value">#BDBDBD</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #E0E0E0; color: #000;">200</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 200</div>
+            <div class="color-value">#E0E0E0</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #F5F5F5; color: #000;">100</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 100</div>
+            <div class="color-value">#F5F5F5</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #FAFAFA; color: #000; border: 1px solid #E0E0E0;">50</div>
+          <div class="color-info">
+            <div class="color-name">Neutral 50</div>
+            <div class="color-value">#FAFAFA</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-block" style="background: #FFFFFF; color: #000; border: 1px solid #E0E0E0;">White</div>
+          <div class="color-info">
+            <div class="color-name">White</div>
+            <div class="color-value">#FFFFFF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões -->
+    <div class="section">
+      <h2 class="section-title">Botões</h2>
+      <div class="button-grid">
+        <button class="btn btn-primary">Botão Primário</button>
+        <button class="btn btn-secondary">Botão Secundário</button>
+        <button class="btn btn-ghost">Botão Ghost</button>
+        <button class="btn btn-error">Botão Danger</button>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="section">
+      <h2 class="section-title">Cards</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Meditar diariamente</div>
+          <div class="card-description">Pratique meditação por 10 minutos todos os dias pela manhã</div>
+          <div class="card-footer">
+            <span class="badge badge-default">7 dias</span>
+            <span>🔥 Sequência ativa</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Ler 30 páginas</div>
+          <div class="card-description">Leia pelo menos 30 páginas de um livro antes de dormir</div>
+          <div class="card-footer">
+            <span class="badge badge-light">3 dias</span>
+            <span>📚 Em progresso</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Exercício físico</div>
+          <div class="card-description">Pratique 30 minutos de atividade física moderada</div>
+          <div class="card-footer">
+            <span class="badge badge-outline">14 dias</span>
+            <span>💪 Forte!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progresso -->
+    <div class="section">
+      <h2 class="section-title">Barras de Progresso</h2>
+      <div class="progress-container">
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Meditar diariamente</span>
+            <span>85%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 85%;"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Ler 30 páginas</span>
+            <span>60%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 60%;"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Exercício físico</span>
+            <span>40%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 40%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tipografia -->
+    <div class="section">
+      <h2 class="section-title">Tipografia</h2>
+      <div class="typography-sample">
+        <h1>Heading 1 - 48px Bold</h1>
+        <h2>Heading 2 - 36px Semibold</h2>
+        <h3>Heading 3 - 24px Semibold</h3>
+        <p>Parágrafo - 16px Regular. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <small>Small text - 14px Regular. Texto menor para legendas e informações secundárias.</small>
+      </div>
+    </div>
+
+    <!-- Gradientes -->
+    <div class="section">
+      <h2 class="section-title">Gradientes Monocromáticos</h2>
+      <div class="gradient-examples">
+        <div class="gradient-box gradient-1">
+          Preto → Cinza Escuro
+        </div>
+        <div class="gradient-box gradient-2">
+          Preto → Cinza Médio
+        </div>
+        <div class="gradient-box gradient-3">
+          Cinza Escuro → Cinza Claro
+        </div>
+        <div class="gradient-box gradient-4">
+          Gradiente Horizontal
+        </div>
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="section">
+      <h2 class="section-title">Campos de Formulário</h2>
+      <div class="input-group">
+        <label class="input-label">Nome do hábito</label>
+        <input type="text" class="input-field" placeholder="Ex: Meditar 10 minutos">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Descrição</label>
+        <input type="text" class="input-field" placeholder="Descreva seu hábito">
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

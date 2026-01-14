@@ -1,0 +1,147 @@
+/* Input Component Styles */
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  width: 100%;
+}
+
+.input-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.input-required {
+  color: var(--color-error);
+  font-weight: var(--font-weight-bold);
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  
+  background-color: var(--color-bg-primary);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.input-wrapper-sm .input-field {
+  height: var(--height-input-sm);
+  padding: 0 var(--spacing-3);
+  font-size: var(--font-size-sm);
+}
+
+.input-wrapper-base .input-field {
+  height: var(--height-input);
+  padding: 0 var(--spacing-4);
+}
+
+.input-wrapper-lg .input-field {
+  height: var(--height-input-lg);
+  padding: 0 var(--spacing-5);
+  font-size: var(--font-size-lg);
+}
+
+/* With Icon */
+.input-wrapper-with-icon .input-field {
+  padding-left: var(--spacing-10);
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--spacing-3);
+  display: flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.input-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* States */
+.input-field:hover:not(:disabled) {
+  border-color: var(--color-border-secondary);
+}
+
+.input-field:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+.input-field:disabled {
+  background-color: var(--color-neutral-100);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* Error State */
+.input-wrapper-error .input-field {
+  border-color: var(--color-error);
+}
+
+.input-wrapper-error .input-field:focus {
+  box-shadow: var(--shadow-error-focus);
+}
+
+.input-error {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.input-helper {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Disabled State */
+.input-wrapper-disabled .input-label {
+  color: var(--color-text-disabled);
+}
+
+/* Autofill Styles */
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px var(--color-bg-primary) inset !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
+  border-color: var(--color-border-focus);
+}
+
+/* Number Input - Remove Spinners */
+.input-field[type="number"]::-webkit-inner-spin-button,
+.input-field[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-field[type="number"] {
+  -moz-appearance: textfield;
+}

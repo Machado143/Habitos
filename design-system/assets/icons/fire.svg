@@ -1,0 +1,6 @@
+<!-- Fire/Streak Icon - 24x24 -->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2C12 2 6 6 6 12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12C18 6 12 2 12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 18C12 18 9 15.5 9 13C9 10.5 12 8 12 8C12 8 15 10.5 15 13C15 15.5 12 18 12 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 22V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

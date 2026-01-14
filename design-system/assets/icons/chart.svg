@@ -1,0 +1,5 @@
+<!-- Chart/Bar Chart Icon - 24x24 -->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9 11V17M15 7V17M3 21H21M3 3L3 21M3 3H21M21 3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M7 17V13C7 12.4477 7.44772 12 8 12H10C10.5523 12 11 12.4477 11 13V17M13 17V9C13 8.44772 13.4477 8 14 8H16C16.5523 8 17 8.44772 17 9V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

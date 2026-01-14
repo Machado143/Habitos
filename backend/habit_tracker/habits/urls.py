@@ -9,6 +9,8 @@ urlpatterns = [
     path('create/', views.habit_create, name='create'),
     path('api/login/', views.LoginView.as_view(), name='api-login'),
     path('api/logout/', views.LogoutView.as_view(), name='api-logout'),
+    path('api/csrf/', views.get_csrf, name='api-csrf'),
+    path('api/create-user/', views.create_user_dev, name='api-create-user'),
     path('api/habits/', views.HabitListAPI.as_view(), name='api-habits'),
     # Redirect legacy /docs/ to Swagger UI
     path('docs/', RedirectView.as_view(url='/api/schema/swagger-ui/'), name='docs'),

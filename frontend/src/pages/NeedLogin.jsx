@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import './AuthLayout.css'
 
 export default function NeedLogin(){
   const location = useLocation()
@@ -8,15 +9,19 @@ export default function NeedLogin(){
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/login', { state: { from: location } })
-    }, 2000)
+    }, 1600)
     return () => clearTimeout(timer)
   }, [location, navigate])
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>É necessário estar logado</h1>
-      <p>Você será redirecionado para a tela de login...</p>
-      <p><Link to="/">Voltar para a página inicial</Link></p>
+    <div className="auth-page">
+      <div className="auth-container">
+        <header className="auth-header">
+          <h1 className="auth-title">É necessário estar logado</h1>
+          <p className="auth-subtitle">Você será redirecionado para a tela de login...</p>
+        </header>
+        <p className="auth-note"><Link to="/">Voltar para a página inicial</Link></p>
+      </div>
     </div>
   )
 }

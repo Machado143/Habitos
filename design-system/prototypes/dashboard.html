@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Hábitos</title>
+  <link rel="stylesheet" href="../tokens/variables.css">
+  <link rel="stylesheet" href="../tokens/animations.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family-body);
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--color-border-primary);
+      padding: var(--spacing-4);
+      z-index: 100;
+    }
+
+    .navbar-container {
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      text-decoration: none;
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .navbar-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: var(--radius-base);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar-logo-text {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+
+    .navbar-avatar {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .container {
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+      padding: var(--spacing-8) var(--spacing-4);
+    }
+
+    .dashboard-header {
+      margin-bottom: var(--spacing-8);
+    }
+
+    .dashboard-title {
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .dashboard-subtitle {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-secondary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .stat-card {
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-5);
+      border: 1px solid var(--color-border-primary);
+      transition: all var(--transition-base);
+    }
+
+    .stat-card:hover {
+      border-color: var(--color-primary-light);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-3);
+    }
+
+    .stat-label {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-secondary);
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-icon.primary {
+      background-color: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    .stat-icon.accent {
+      background-color: var(--color-accent-light);
+      color: var(--color-accent);
+    }
+
+    .stat-value {
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-4);
+    }
+
+    .section-title {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      height: var(--height-button);
+      padding: 0 var(--spacing-4);
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-inverse);
+      background-color: var(--color-primary);
+      border: none;
+      border-radius: var(--radius-base);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .habits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--spacing-4);
+    }
+
+    .habit-card {
+      background-color: var(--color-bg-primary);
+      border: 2px solid var(--color-border-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      transition: all var(--transition-base);
+    }
+
+    .habit-card:hover {
+      border-color: var(--color-primary-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .habit-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-3);
+    }
+
+    .habit-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+    }
+
+    .habit-badge {
+      padding: var(--spacing-1) var(--spacing-2);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-primary);
+      background-color: var(--color-primary-light);
+      border-radius: var(--radius-sm);
+    }
+
+    .habit-progress {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background-color: var(--color-neutral-200);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #000000, #424242);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-slow);
+    }
+
+    .progress-text {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-secondary);
+    }
+
+    .habit-streak {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background-color: var(--color-accent-light);
+      border-radius: var(--radius-base);
+      color: var(--color-accent);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+    }
+
+    @media (max-width: 640px) {
+      .dashboard-title {
+        font-size: var(--font-size-3xl);
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .habits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <div class="navbar-logo-icon">✓</div>
+        <span class="navbar-logo-text">Hábitos</span>
+      </a>
+      <div class="navbar-user">
+        <div class="navbar-avatar">U</div>
+        <span>Usuário</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="dashboard-header">
+      <h1 class="dashboard-title">Olá, Usuário! 👋</h1>
+      <p class="dashboard-subtitle">Continue sua jornada de desenvolvimento pessoal</p>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Hábitos ativos</span>
+          <div class="stat-icon primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M9 11V17M15 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-value">8</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Dias de sequência</span>
+          <div class="stat-icon accent">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C12 2 6 6 6 12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12C18 6 12 2 12 2Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-value">23</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Concluídos hoje</span>
+          <div class="stat-icon accent">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-value">5/8</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">Seus hábitos</h2>
+      <a href="#" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Novo hábito
+      </a>
+    </div>
+
+    <div class="habits-grid">
+      <div class="habit-card">
+        <div class="habit-header">
+          <h3 class="habit-title">Meditação matinal</h3>
+          <span class="habit-badge">Diário</span>
+        </div>
+        <div class="habit-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 85%"></div>
+          </div>
+          <span class="progress-text">85%</span>
+        </div>
+        <div class="habit-streak">
+          🔥 23 dias seguidos
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-header">
+          <h3 class="habit-title">Ler 30 minutos</h3>
+          <span class="habit-badge">Diário</span>
+        </div>
+        <div class="habit-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 70%"></div>
+          </div>
+          <span class="progress-text">70%</span>
+        </div>
+        <div class="habit-streak">
+          🔥 15 dias seguidos
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-header">
+          <h3 class="habit-title">Exercícios físicos</h3>
+          <span class="habit-badge">Semanal</span>
+        </div>
+        <div class="habit-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 60%"></div>
+          </div>
+          <span class="progress-text">60%</span>
+        </div>
+        <div class="habit-streak">
+          🔥 8 semanas seguidas
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

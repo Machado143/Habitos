@@ -1,0 +1,96 @@
+/* Card Component Styles */
+
+.card {
+  background-color: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Variants */
+.card-default {
+  border: 1px solid var(--color-border-primary);
+}
+
+.card-bordered {
+  border: 2px solid var(--color-border-secondary);
+}
+
+.card-elevated {
+  border: none;
+  box-shadow: var(--shadow-base);
+}
+
+/* Padding Variants */
+.card-padding-sm {
+  padding: var(--spacing-3);
+}
+
+.card-padding-base {
+  padding: var(--spacing-4);
+}
+
+.card-padding-lg {
+  padding: var(--spacing-6);
+}
+
+/* Hoverable Effect */
+.card-hoverable {
+  cursor: pointer;
+}
+
+.card-hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-light);
+}
+
+.card-hoverable:active {
+  transform: translateY(0);
+}
+
+/* Card Sections */
+.card-header {
+  margin-bottom: var(--spacing-4);
+}
+
+.card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: var(--spacing-1) 0 0 0;
+  line-height: var(--line-height-normal);
+}
+
+.card-body {
+  flex: 1;
+  color: var(--color-text-primary);
+}
+
+.card-footer {
+  margin-top: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .card-padding-base {
+    padding: var(--spacing-3);
+  }
+  
+  .card-padding-lg {
+    padding: var(--spacing-4);
+  }
+}

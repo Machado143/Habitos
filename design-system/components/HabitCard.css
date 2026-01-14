@@ -1,0 +1,200 @@
+/* HabitCard Component Styles */
+
+.habit-card {
+  background-color: var(--color-bg-primary);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.habit-card:hover {
+  border-color: var(--color-primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.habit-card-completed {
+  background-color: var(--color-accent-light);
+  border-color: var(--color-accent);
+}
+
+/* Header */
+.habit-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+}
+
+.habit-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-1) 0;
+  line-height: var(--line-height-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.habit-card-frequency {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  border-radius: var(--radius-sm);
+}
+
+.habit-card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.habit-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.habit-card-action:hover {
+  background-color: var(--color-neutral-100);
+  color: var(--color-text-primary);
+}
+
+.habit-card-action-danger:hover {
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+}
+
+/* Body */
+.habit-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* Progress */
+.habit-card-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.habit-card-progress-bar {
+  flex: 1;
+  height: 8px;
+  background-color: var(--color-neutral-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.habit-card-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+.habit-card-progress-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Streak */
+.habit-card-streak {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+}
+
+.habit-card-streak svg {
+  color: var(--color-accent);
+}
+
+/* Footer */
+.habit-card-footer {
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-border-primary);
+}
+
+.habit-card-complete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--spacing-4);
+  
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  
+  background-color: var(--color-primary-light);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.habit-card-complete:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  transform: translateY(-1px);
+}
+
+.habit-card-complete:active {
+  transform: translateY(0);
+}
+
+.habit-card-complete.completed {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  cursor: default;
+}
+
+.habit-card-complete.completed:hover {
+  transform: none;
+}
+
+.habit-card-complete svg {
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .habit-card {
+    padding: var(--spacing-3);
+  }
+
+  .habit-card-title {
+    font-size: var(--font-size-base);
+  }
+}

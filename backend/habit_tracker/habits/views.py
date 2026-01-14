@@ -15,6 +15,11 @@ from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from django.http import HttpResponseForbidden
 
 
 @login_required
@@ -101,3 +106,41 @@ def docs_list(request):
             if os.path.isfile(path):
                 files.append(name)
     return render(request, 'habits/docs_list.html', {'files': files, 'docs_dir': docs_dir})
+
+
+@ensure_csrf_cookie
+def get_csrf(request):
+    """Endpoint simples para garantir que o cookie CSRF seja enviado ao cliente.
+    Use em SPAs: o frontend deve fazer GET em /api/csrf/ (com credentials) antes de POSTs autenticados.
+    """
+    return JsonResponse({'detail': 'CSRF cookie set'})
+
+
+@csrf_exempt
+def create_user_dev(request):
+    """Endpoint de apoio para criar usuários em ambiente de desenvolvimento.
+    Somente habilitado quando `DEBUG` é True.
+    Recebe JSON: {"username":"...","password":"..."}
+    """
+    if not settings.DEBUG:
+        return HttpResponseForbidden('Not allowed')
+
+    if request.method != 'POST':
+        return JsonResponse({'detail': 'Only POST allowed'}, status=405)
+
+    try:
+        import json
+        data = json.loads(request.body.decode('utf-8') or '{}')
+        username = data.get('username')
+        password = data.get('password')
+        if not username or not password:
+            return JsonResponse({'detail': 'username and password required'}, status=400)
+
+        User = get_user_model()
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'detail': 'User exists'}, status=200)
+
+        user = User.objects.create_user(username=username, password=password)
+        return JsonResponse({'detail': 'User created', 'username': user.username}, status=201)
+    except Exception as e:
+        return JsonResponse({'detail': str(e)}, status=500)

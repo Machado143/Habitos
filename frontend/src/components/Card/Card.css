@@ -1,0 +1,79 @@
+.card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  animation: fadeIn var(--transition-base) ease-out;
+}
+
+/* Variants */
+.card-elevated {
+  box-shadow: var(--shadow-sm);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-outlined {
+  border: 1px solid var(--border-subtle);
+}
+
+.card-outlined:hover {
+  border-color: var(--border-default);
+}
+
+/* Padding */
+.card-padding-none {
+  padding: 0;
+}
+
+.card-padding-sm {
+  padding: var(--spacing-4);
+}
+
+.card-padding-base {
+  padding: var(--spacing-6);
+}
+
+.card-padding-lg {
+  padding: var(--spacing-8);
+}
+
+/* States */
+.card-hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:active {
+  transform: translateY(0);
+}
+
+/* Header */
+.card-header {
+  margin-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-1);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Content */
+.card-content {
+  color: var(--text-secondary);
+}
